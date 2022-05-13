@@ -22,6 +22,17 @@ android {
         }
     }
 
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def kotlinVersion = "1.6.0"
+            def requested = details.requested
+            if (requested.group == 'org.jetbrains.kotlin') {
+                List<String> list = ['kotlin-stdlib', 'kotlin-stdlib-jdk7', 'kotlin-stdlib-jdk8', 'kotlin-stdlib-common']
+                if (list.contains(requested.name)) { details.useVersion kotlinVersion }
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -49,6 +60,7 @@ android {
 }
 
 dependencies {
+    //warning: Kotlin runtime JAR files in the classpath should have the same version to fix thsi
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_version"
@@ -114,6 +126,6 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
     testImplementation 'junit:junit:4.13.2'
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:1.6.21"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1"
 }
