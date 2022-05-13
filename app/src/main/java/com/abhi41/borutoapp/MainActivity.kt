@@ -7,8 +7,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.abhi41.borutoapp.navigation.SetupNavGraph
 import com.abhi41.borutoapp.ui.theme.BorutoAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-
+//to tell our dagger where to inject those dependencies which we are going to provide
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
