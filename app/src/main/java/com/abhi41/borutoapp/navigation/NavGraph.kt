@@ -7,12 +7,14 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import coil.annotation.ExperimentalCoilApi
 import com.abhi41.borutoapp.presentation.screen.home.HomeScreen
 import com.abhi41.borutoapp.presentation.screen.splash.SplashScreen
 import com.abhi41.borutoapp.presentation.screen.welcome.WelcomeScreen
 import com.abhi41.borutoapp.util.Constants.DETAILS_ARGUMENTS_KEY
 import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalCoilApi
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
@@ -28,7 +30,7 @@ fun SetupNavGraph(navController: NavHostController) {
             WelcomeScreen(navHostController = navController)
         }
         composable(route = Screen.Home.route) {
-            HomeScreen()
+            HomeScreen(navHostController = navController)
         }
         composable(
             route = Screen.DetailsScreen.route,

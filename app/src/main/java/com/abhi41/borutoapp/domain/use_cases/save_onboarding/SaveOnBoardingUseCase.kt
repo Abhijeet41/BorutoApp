@@ -1,11 +1,11 @@
 package com.abhi41.borutoapp.domain.use_cases.save_onboarding
 
-import com.abhi41.borutoapp.data.repository.RepositoryOnBoarding
+import com.abhi41.borutoapp.data.repository.Repository
 
 class SaveOnBoardingUseCase(
-    private val repositoryOnBoarding: RepositoryOnBoarding
+    private val repository: Repository
 ) {
     suspend operator fun invoke(completed: Boolean) {
-        repositoryOnBoarding.saveOnBoardingState(completed)
+        repository.saveOnBoardingState(completed)
     }
 }

@@ -1,10 +1,10 @@
 package com.abhi41.borutoapp.domain.use_cases.read_onboarding
 
-import com.abhi41.borutoapp.data.repository.RepositoryOnBoarding
+import com.abhi41.borutoapp.data.repository.Repository
 import kotlinx.coroutines.flow.Flow
 
 class ReadOnBoardingUseCase(
-    private val repositoryOnBoarding: RepositoryOnBoarding
+    private val repository: Repository
 ) {
     /*
         IMP Note: from SplashViewModel we called this ReadOnBoardingUserCase and we haven't called
@@ -13,6 +13,6 @@ class ReadOnBoardingUseCase(
      */
 
     operator fun invoke(): Flow<Boolean>{
-        return repositoryOnBoarding.readOnBoardingState()
+        return repository.readOnBoardingState()
     }
 }

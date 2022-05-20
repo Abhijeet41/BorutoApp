@@ -1,4 +1,4 @@
-package com.abhi41.borutoapp
+package com.abhi41.borutoapp.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

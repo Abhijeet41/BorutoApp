@@ -2,9 +2,10 @@ package com.abhi41.borutoapp.di
 
 import android.content.Context
 import com.abhi41.borutoapp.data.repository.DataStoreOperationsImpl
-import com.abhi41.borutoapp.data.repository.RepositoryOnBoarding
+import com.abhi41.borutoapp.data.repository.Repository
 import com.abhi41.borutoapp.domain.repository.DataStoreOperations
 import com.abhi41.borutoapp.domain.use_cases.UseCases
+import com.abhi41.borutoapp.domain.use_cases.get_all_heroes.GetAllHeroesUseCase
 import com.abhi41.borutoapp.domain.use_cases.read_onboarding.ReadOnBoardingUseCase
 import com.abhi41.borutoapp.domain.use_cases.save_onboarding.SaveOnBoardingUseCase
 import dagger.Module
@@ -32,10 +33,11 @@ object RepositoryModule {
 
     @Provides
     @Singleton //this will provide instance of usecases
-    fun provideUseCases(repositoryOnBoarding: RepositoryOnBoarding): UseCases {
+    fun provideUseCases(repository: Repository): UseCases {
         return UseCases(
-            saveOnBoardingUseCase = SaveOnBoardingUseCase(repositoryOnBoarding),
-            readOnBoardingUseCase = ReadOnBoardingUseCase(repositoryOnBoarding)
+            saveOnBoardingUseCase = SaveOnBoardingUseCase(repository),
+            readOnBoardingUseCase = ReadOnBoardingUseCase(repository),
+            getAllHeroesUseCase = GetAllHeroesUseCase(repository)
         )
     }
 

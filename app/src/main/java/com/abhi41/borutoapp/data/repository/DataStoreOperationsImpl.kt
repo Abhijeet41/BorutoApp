@@ -37,7 +37,7 @@ class DataStoreOperationsImpl(context: Context) : DataStoreOperations {
             .catch { exception ->
                 if (exception is IOException) {
                     emit(emptyPreferences())
-                }else{
+                } else {
                     throw exception
                 }
             }.map { mutablePreferences ->
