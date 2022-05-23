@@ -1,4 +1,4 @@
-package com.abhi41.borutoapp.domain.model
+package com.abhi41.borutoapp.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,5 +9,6 @@ data class HeroRemoteKeys(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
     val prevPage: Int?,
-    val nextPage: Int?
+    val nextPage: Int?,
+    val lastUpdated:Long?
 )

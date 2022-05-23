@@ -1,5 +1,6 @@
 package com.abhi41.borutoapp.domain.model
 
+import com.abhi41.borutoapp.data.local.entity.Hero
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 

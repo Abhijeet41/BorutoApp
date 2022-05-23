@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.abhi41.borutoapp.data.local.BorutoDatabase
+import com.abhi41.borutoapp.data.local.BorutoDatabase.Companion.migration_1_2
 import com.abhi41.borutoapp.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -25,7 +26,9 @@ object DatabaseModule {
             context,
             BorutoDatabase::class.java,
             Constants.BORUTO_DATABASE
-        ).build()
+        ).addMigrations(migration_1_2)
+            //.fallbackToDestructiveMigration()
+            .build()
     }
 
 }

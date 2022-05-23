@@ -2,4 +2,5 @@
 <resources>
     <string name="search_icon">Search Icon</string>
     <string name="hero_image">Hero Image</string>
+    <string name="nertowrk_error_icon">network error icon</string>
 </resources>

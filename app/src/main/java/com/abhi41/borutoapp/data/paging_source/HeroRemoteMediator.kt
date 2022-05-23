@@ -1,5 +1,6 @@
 package com.abhi41.borutoapp.data.paging_source
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -7,9 +8,13 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.abhi41.borutoapp.data.local.BorutoDatabase
 import com.abhi41.borutoapp.data.remote.BorutoApi
-import com.abhi41.borutoapp.domain.model.Hero
-import com.abhi41.borutoapp.domain.model.HeroRemoteKeys
+import com.abhi41.borutoapp.data.local.entity.Hero
+import com.abhi41.borutoapp.data.local.entity.HeroRemoteKeys
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
+
+private const val TAG = "HeroRemoteMediator"
 
 @OptIn(ExperimentalPagingApi::class)
 class HeroRemoteMediator @Inject constructor(
@@ -27,6 +32,29 @@ class HeroRemoteMediator @Inject constructor(
         has been loaded so far
         2) Trigger the network request.
      */
+
+    override suspend fun initialize(): InitializeAction {
+        val currentTime = System.currentTimeMillis()
+        val lastUpdated = heroRemoteKeysDao.getRemoteKeys(heroId = 1)?.lastUpdated ?: 0L
+        val cacheTimeOut = 5   //5 minute after thant we change it to 24hr this is for testing purpose
+     //   val cacheTimeOut = 1440   // we change it to 24hr
+        Log.d(TAG, "Current Time: ${parseMillis(currentTime)}")
+        Log.d(TAG, "Last Updated Time: ${parseMillis(lastUpdated)}")
+        /*
+            why we divide by 1000 and 60 because
+            these two values are  milliseconds and 1 secound is 1000 milisec
+             and 1 min contain 60 seconds
+         */
+        val diffInMinutes = (currentTime - lastUpdated) / 1000 / 60
+        Log.d(TAG, "diffInMinutes: $diffInMinutes")
+        return if (diffInMinutes.toInt() <= cacheTimeOut) {
+            Log.d(TAG, "Up to date: ")
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            Log.d(TAG, "REFRESH! ")
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        }
+    }
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Hero>): MediatorResult {
         try {
@@ -73,7 +101,8 @@ class HeroRemoteMediator @Inject constructor(
                         HeroRemoteKeys(
                             id = hero.id,
                             prevPage = prevPage,
-                            nextPage = nextPage
+                            nextPage = nextPage,
+                            lastUpdated = response.lastUpdated
                         )
                     }
                     heroRemoteKeysDao.addAllRemoteKeys(heroRemoteKeys = keys)
@@ -112,9 +141,15 @@ class HeroRemoteMediator @Inject constructor(
                 heroRemoteKeysDao.getRemoteKeys(heroId = hero.id)
             }
     }
-        /*
-            Remember paging state contains information
-             about the pages loaded so far
-         */
+    /*
+        Remember paging state contains information
+         about the pages loaded so far
+     */
 
+
+    private fun parseMillis(milis: Long): String{
+        val date = Date(milis)
+        val format = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.ROOT)
+        return format.format(date)
+    }
 }

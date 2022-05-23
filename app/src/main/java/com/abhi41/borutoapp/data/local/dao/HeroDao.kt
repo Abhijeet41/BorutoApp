@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.abhi41.borutoapp.domain.model.Hero
+import com.abhi41.borutoapp.data.local.entity.Hero
 
 @Dao
 interface HeroDao {

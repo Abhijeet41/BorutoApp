@@ -6,14 +6,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,18 +23,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.abhi41.borutoapp.R
-import com.abhi41.borutoapp.domain.model.Hero
+import com.abhi41.borutoapp.data.local.entity.Hero
 import com.abhi41.borutoapp.navigation.Screen
 import com.abhi41.borutoapp.presentation.screen.components.RatingWidget
 import com.abhi41.borutoapp.ui.theme.*
 import com.abhi41.borutoapp.util.Constants.BASE_URL
 
 private const val TAG = "ListContent"
+
 //so we have to display same list for search screen and our home screen
 @ExperimentalCoilApi
 @Composable
@@ -45,23 +45,54 @@ fun ListContent(
     navHostController: NavHostController
 ) {
     Log.d(TAG, heros.loadState.toString())
-    LazyColumn(
-        contentPadding = PaddingValues(all = SMALL_PADDING),
-        verticalArrangement = Arrangement.spacedBy(SMALL_PADDING) //its like space between item list
-    ) {
-        items(
-            items = heros,
-            key = { hero ->
-                hero.id
-            }
-        ) { hero ->
-            hero?.let {
-                HeroItem(hero = it, navHostController = navHostController)
+    val result = handlePagingResult(heros = heros)
+    if (result){
+        LazyColumn(
+            contentPadding = PaddingValues(all = SMALL_PADDING),
+            verticalArrangement = Arrangement.spacedBy(SMALL_PADDING) //its like space between item list
+        ) {
+            items(
+                items = heros,
+                key = { hero ->
+                    hero.id
+                }
+            ) { hero ->
+                hero?.let {
+                    HeroItem(hero = it, navHostController = navHostController)
+                }
             }
         }
     }
 
+
 }
+
+@Composable
+fun handlePagingResult(
+    heros: LazyPagingItems<Hero>
+): Boolean {
+    heros.apply {
+        val error = when {
+            loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
+            loadState.prepend is LoadState.Error -> loadState.prepend as LoadState.Error
+            loadState.append is LoadState.Error -> loadState.append as LoadState.Error
+            else -> null
+        }
+        return when{
+            loadState.refresh is LoadState.Loading ->{
+                ShimmerEffect()
+                false
+            }
+            error != null-> {
+                Log.d(TAG, "EmptyScreen: ${error.toString()}")
+                EmptyScreen(error = error)
+                false
+            }
+            else -> true
+        }
+    }
+}
+
 
 @ExperimentalCoilApi
 @Composable

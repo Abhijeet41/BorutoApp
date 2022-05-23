@@ -1,8 +1,7 @@
 package com.abhi41.borutoapp.data.repository
 
-import androidx.datastore.core.DataStore
 import androidx.paging.PagingData
-import com.abhi41.borutoapp.domain.model.Hero
+import com.abhi41.borutoapp.data.local.entity.Hero
 import com.abhi41.borutoapp.domain.repository.DataStoreOperations
 import com.abhi41.borutoapp.domain.repository.RemoteDataSource
 import kotlinx.coroutines.flow.Flow

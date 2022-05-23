@@ -1,4 +1,4 @@
-package com.abhi41.borutoapp.domain.model
+package com.abhi41.borutoapp.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
