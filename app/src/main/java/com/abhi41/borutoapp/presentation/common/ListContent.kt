@@ -88,6 +88,10 @@ fun handlePagingResult(
                 EmptyScreen(error = error)
                 false
             }
+            heros.itemCount == 0 ->{
+                EmptyScreen()
+                false
+            }
             else -> true
         }
     }

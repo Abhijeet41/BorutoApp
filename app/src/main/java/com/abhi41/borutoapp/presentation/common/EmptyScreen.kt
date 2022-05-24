@@ -32,16 +32,22 @@ import java.net.UnknownHostException
 
 
 @Composable
-fun EmptyScreen(error: LoadState.Error) {
+fun EmptyScreen(error: LoadState.Error? = null) {
 
-    val message by remember {
-        mutableStateOf(parseErrorMessage(error = error))
+    var message by remember {
+        mutableStateOf("Find your Favorite Hero!")
     }
-    val icon by remember {
-        mutableStateOf(R.drawable.ic_network_error)
+    var icon by remember {
+        mutableStateOf(R.drawable.ic_search_document)
+    }
+
+    if (error != null){
+        message = parseErrorMessage(error)
+        icon = R.drawable.ic_network_error
     }
 
     var startAnimation by remember { mutableStateOf(false) }
+
     val alphaAnim by animateFloatAsState(
         targetValue = if (startAnimation) ContentAlpha.disabled else 0f,
         animationSpec = tween(
