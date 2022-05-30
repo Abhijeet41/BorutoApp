@@ -6,6 +6,7 @@ import com.abhi41.borutoapp.data.repository.Repository
 import com.abhi41.borutoapp.domain.repository.DataStoreOperations
 import com.abhi41.borutoapp.domain.use_cases.UseCases
 import com.abhi41.borutoapp.domain.use_cases.get_all_heroes.GetAllHeroesUseCase
+import com.abhi41.borutoapp.domain.use_cases.get_selected_hero.GetSelectedHeroUseCase
 import com.abhi41.borutoapp.domain.use_cases.read_onboarding.ReadOnBoardingUseCase
 import com.abhi41.borutoapp.domain.use_cases.save_onboarding.SaveOnBoardingUseCase
 import com.abhi41.borutoapp.domain.use_cases.search_heroes.SearchHeroesUsecase
@@ -39,7 +40,8 @@ object RepositoryModule {
             saveOnBoardingUseCase = SaveOnBoardingUseCase(repository),
             readOnBoardingUseCase = ReadOnBoardingUseCase(repository),
             getAllHeroesUseCase = GetAllHeroesUseCase(repository),
-            searchHeroesUsecase = SearchHeroesUsecase(repository)
+            searchHeroesUsecase = SearchHeroesUsecase(repository),
+            getSelectedHeroUseCase = GetSelectedHeroUseCase(repository)
         )
     }
 

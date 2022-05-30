@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.abhi41.borutoapp.data.local.BorutoDatabase
 import com.abhi41.borutoapp.data.local.BorutoDatabase.Companion.migration_1_2
+import com.abhi41.borutoapp.data.repository.LocalDataSourceImpl
 import com.abhi41.borutoapp.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -29,6 +30,14 @@ object DatabaseModule {
         ).addMigrations(migration_1_2)
             //.fallbackToDestructiveMigration()
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocalDataSource(database: BorutoDatabase): LocalDataSourceImpl {
+        return LocalDataSourceImpl(
+            borutoDatabase = database
+        )
     }
 
 }

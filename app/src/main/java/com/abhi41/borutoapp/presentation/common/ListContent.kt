@@ -85,7 +85,7 @@ fun handlePagingResult(
             }
             error != null-> {
                 Log.d(TAG, "EmptyScreen: ${error.toString()}")
-                EmptyScreen(error = error)
+                EmptyScreen(error = error, heroes = heros)
                 false
             }
             heros.itemCount == 0 ->{
