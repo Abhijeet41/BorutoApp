@@ -41,5 +41,28 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    /*
+          Note: why we use SharedFlow: because with the shared flow, we are going to be able to
+           trigger one time events and it will not trigger again even if we rotate our screen
+          */
+    private val _uiEvent = MutableSharedFlow<UiEvent>()
+    val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
+
+    private val _colorPalette: MutableState<Map<String, String>> = mutableStateOf(mapOf())
+    val colorPalette: State<Map<String, String>> = _colorPalette
+
+    fun generateColorPalette() {
+        viewModelScope.launch {
+            _uiEvent.emit(UiEvent.GenerateColorPalette)
+        }
+    }
+
+    fun setColorPalette(colors: Map<String, String>) {
+        _colorPalette.value = colors
+    }
+}
+
+sealed class UiEvent {
+    object GenerateColorPalette : UiEvent()
 }
 

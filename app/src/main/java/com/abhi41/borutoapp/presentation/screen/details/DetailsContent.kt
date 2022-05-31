@@ -1,5 +1,6 @@
 package com.abhi41.borutoapp.presentation.screen.details
 
+import android.graphics.Color.parseColor
 import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
@@ -9,8 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -30,6 +30,7 @@ import com.abhi41.borutoapp.ui.theme.*
 import com.abhi41.borutoapp.util.Constants.ABOUT_TEXT_MAX_LINE
 import com.abhi41.borutoapp.util.Constants.BASE_URL
 import com.abhi41.borutoapp.util.Constants.MIN_BACKGROUND_IMAGE_HEIGHT
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private const val TAG = "DetailsContent"
 
@@ -37,8 +38,25 @@ private const val TAG = "DetailsContent"
 @Composable
 fun DetailsContent(
     navHostController: NavHostController,
-    selectedHero: Hero?
+    selectedHero: Hero?,
+    colors: Map<String, String>
 ) {
+    var vibrant by remember { mutableStateOf("#000000") }
+    var darkVibrant by remember { mutableStateOf("#000000") }
+    var onDarkVibrant by remember { mutableStateOf("#ffffff") }
+
+    LaunchedEffect(key1 = selectedHero) {
+        //this means whenever selectedHero change get colors and set to variable
+        vibrant = colors["vibrant"]!!
+        darkVibrant = colors["darkVibrant"]!!
+        onDarkVibrant = colors["onDarkVibrant"]!!
+    }
+    //change status bar color by applying color palette
+    val systemUiController = rememberSystemUiController()
+    systemUiController.setStatusBarColor(
+        color = Color(parseColor(darkVibrant))
+    )
+
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Expanded)
     )
@@ -54,13 +72,18 @@ fun DetailsContent(
     BottomSheetScaffold(
         sheetShape = RoundedCornerShape(
             topStart = radiusAnim,
-            topEnd =radiusAnim
+            topEnd = radiusAnim
         ),
         scaffoldState = scaffoldState, //bottomsheet default state is expanded
         sheetPeekHeight = MIN_SHEET_HEIGHT,
         sheetContent = {
             if (selectedHero != null) {
-                BottomSheetContent(selectedHero = selectedHero)
+                BottomSheetContent(
+                    selectedHero = selectedHero,
+                    infoBoxIconColor = Color(parseColor(vibrant)),
+                    sheetBackgroundColor = Color(parseColor(darkVibrant)),
+                    contentColor = Color(parseColor(onDarkVibrant)),
+                )
             }
         },
         content = {
@@ -69,6 +92,7 @@ fun DetailsContent(
                 BackGroundContent(
                     heroImage = selectedHero.image,
                     imageFraction = currentSheetFraction,
+                    backgroundColor = Color(parseColor(darkVibrant)),
                     onCloseClicked = {
                         navHostController.popBackStack()
                     }

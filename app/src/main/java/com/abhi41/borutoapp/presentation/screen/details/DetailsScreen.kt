@@ -1,10 +1,16 @@
 package com.abhi41.borutoapp.presentation.screen.details
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.abhi41.borutoapp.util.Constants
+import com.abhi41.borutoapp.util.Constants.BASE_URL
+import com.abhi41.borutoapp.util.PaletteGenerator
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun DetailsScreen(
@@ -17,10 +23,40 @@ fun DetailsScreen(
       Id we can fetch data from database
      */
 
-   // val selectedHero = detailsViewModel.selectedHero
+    // val selectedHero = detailsViewModel.selectedHero
     val selectedHero by detailsViewModel.selectedHero.collectAsState()
+    val colorPalette by detailsViewModel.colorPalette
 
+    if (colorPalette.isNotEmpty()) {
+        DetailsContent(
+            navHostController = navController,
+            selectedHero = selectedHero,
+            colors = colorPalette
+        )
+    } else {
+        detailsViewModel.generateColorPalette()
+    }
 
+    val context  = LocalContext.current
+    LaunchedEffect(key1 = true) {
+        /* this means block inside this launch effect will trigger only first time we called our
+        DetailsScreen */
+        detailsViewModel.uiEvent.collectLatest { event ->
+            when (event) {
+                is UiEvent.GenerateColorPalette -> {
+                   val bitmap = PaletteGenerator.convertImageToBitmap(
+                       imageUrl = "$BASE_URL${selectedHero?.image}",
+                       context = context
+                   )
 
-    DetailsContent(navHostController = navController, selectedHero = selectedHero)
+                    if (bitmap != null){
+                        detailsViewModel.setColorPalette(
+                            colors = PaletteGenerator.extractColorsFromBitmap(bitmap)
+                        )
+                    }
+                }
+            }
+        }
+    }
+
 }
