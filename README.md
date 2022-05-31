@@ -1,6 +1,6 @@
 # BorutoApp
 Boruto app with clean architecture with use case, Unit testing 
-used Color PaletteApi to pick color from bitmap and apply fot background and status color
+used Color PaletteApi to pick color from bitmap and apply on background and status color
 
 
 <img src= "https://user-images.githubusercontent.com/45313305/171111706-d7b42adc-7bab-44e9-9acc-c16995f798df.jpg" width="450" height="750"> 
