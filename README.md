@@ -1,4 +1,4 @@
-# BorutoApp
+# JetBorutoApp
 Boruto app build in Jetpack Compose with clean architecture with use case, Unit testing 
 used Color PaletteApi to pick color from bitmap and apply on background and status color
 
