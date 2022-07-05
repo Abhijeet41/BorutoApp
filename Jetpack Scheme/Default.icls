@@ -1,0 +1,17 @@
+<scheme name="Default" version="142" parent_scheme="Default">
+  <metaInfo>
+    <property name="created">2022-07-05T16:14:25</property>
+    <property name="ide">AndroidStudio</property>
+    <property name="ideVersion">2021.2.1.15</property>
+    <property name="modified">2022-07-05T16:14:49</property>
+    <property name="originalScheme">_@user_Default</property>
+  </metaInfo>
+  <attributes>
+    <option name="ComposableCallTextAttributes">
+      <value>
+        <option name="FOREGROUND" value="52479" />
+        <option name="FONT_TYPE" value="1" />
+      </value>
+    </option>
+  </attributes>
+</scheme>
